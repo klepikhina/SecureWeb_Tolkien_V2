@@ -7,7 +7,7 @@ include_once('/var/www/html/hw6/hw6-lib.php');
 echo "<html> <head> <title> Tolkien </title> </head> <body>";
 $db=connect();
 echo "<a href=index.php?s=4> Characters </a>";
-if(is_numeric($s) || $s==NULL) {
+if(icheck($s)) {
         switch($s) {
                 case 0:
                         echo "<table> <tr> <td> <b> <u> Stories </b></u> </td></tr> \n";
