@@ -22,13 +22,17 @@ if(is_numeric($s) || $s==NULL) {
                         break;   
                 case 1: 
                         echo "<table> <tr> <td> <b> <u> Books </b> </u> </td> </tr> \n";
-                        $sid=htmlspecialchars($sid);
-                        $bid=htmlspecialchars($bid);
-                        $query = "SELECT b.bookid, b.title  from books b, stories s where b.storyid=s.storyid and b.storyid=$sid";
-                        $result = mysqli_query($db, $query);
-                        
-                        while($row=mysqli_fetch_row($result)) {
-                                echo "<tr> <td> <a href=index.php?bid=$row[0]&s=2> $row[1] </a> </td> </tr> \n";
+                        $sid=mysqli_real_escape_string($db, $sid);
+                        if ($stmt = mysqli_prepare($db, "SELECT bookid, title  from books where storyid=?")) {
+                                mysqli_stmt_bind_param($stmt, "s", $sid);
+                                mysqli_stmt_execute($stmt);
+                                mysqli_stmt_bind_result($stmt, $bid, $title);
+                                while(mysqli_stmt_fetch($stmt)) {
+                                        $bid=htmlspecialchars($bid);
+                                        $title=htmlspecialchars($title);
+                                        echo "<tr> <td> <a href=index.php?bid=$bid&s=2> $title </a> </td> </tr> \n";
+                                }
+                                mysqli_stmt_close($stmt);
                         }
                         echo "</table>";
                         break;
@@ -74,11 +78,24 @@ echo "<table> <tr> <td> <b> <u> Characters </b> </u> </td> </tr> \n
                         }
                         echo  "</table>";
                         break;
+                case 5:
+                        $characterName=mysqli_real_escape_string($db, $characterName);
+                        $characterRace=mysqli_real_escape_string($db, $characterRace);
+                        $characterSide=mysqli_real_escape_string($db, $characterSide);
+                        if ($stmt = mysqli_prepare($db, "INSERT INTO characters set characterid='', name=?, race=?, side=?")) {
+                                mysqli_stmt_bind_param($stmt, "sss", $characterName, $characterRace, $characterSide);
+                                mysqli_stmt_execute($stmt);
+                                mysqli_stmt_bind_result($stmt, $cid);
+                                while(mysqli_stmt_fetch($stmt)) {
+                                        $cid=$cid;                                }
+                                mysqli_stmt_close($stmt);
+                        } else {
+                                echo "Error with query";
+                        }
                 default:
                         echo "<table> <tr> <td> <b> <u> Stories </b></u> </td></tr> \n";
                         $query = "SELECT storyid, story from stories";
                         $result = mysqli_query($db, $query);
-                        $sid=htmlspecialchars($sid);
                         while($row=mysqli_fetch_row($result)) {
                                 echo "<tr> <td> <a href=index.php?sid=$row[0]&s=1> $row[1] </a> </td> </tr> \n";
                         }
