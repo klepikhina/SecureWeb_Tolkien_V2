@@ -1,8 +1,8 @@
 <?php
-isset ( $_REQUEST['s'] ) ? $s = $_REQUEST['s'] : $s = "";
-isset ( $_REQUEST['sid'] ) ? $sid = $_REQUEST['sid'] : $sid = "";
-isset ( $_REQUEST['bid'] ) ? $bid = $_REQUEST['bid'] : $bid = "";
-isset ( $_REQUEST['cid'] ) ? $cid = $_REQUEST['cid'] : $cid = "";
+isset ( $_REQUEST['s'] ) ? $s = strip_tags($_REQUEST['s']) : $s = "";
+isset ( $_REQUEST['sid'] ) ? $sid = strip_tags($_REQUEST['sid']) : $sid = "";
+isset ( $_REQUEST['bid'] ) ? $bid = strip_tags($_REQUEST['bid']) : $bid = "";
+isset ( $_REQUEST['cid'] ) ? $cid = strip_tags($_REQUEST['cid']) : $cid = "";
 $sid=htmlspecialchars($sid);
 $bid=htmlspecialchars($bid);
 $cid=htmlspecialchars($cid);
