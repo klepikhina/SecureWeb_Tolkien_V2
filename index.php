@@ -1,9 +1,9 @@
 <?php
-#Purpose: Homework 5
+#Purpose: Homework 6
 #Author: Ksenia Lepikhina ksle1621@colorado.edu
 #Version: 1.0
-#Date: 02/20/2018
-include_once('/var/www/html/hw5/hw5-lib.php');
+#Date: 02/27/2018
+include_once('/var/www/html/hw6/hw6-lib.php');
 echo "<html> <head> <title> Tolkien </title> </head> <body>";
 $db=connect();
 echo "<a href=index.php?s=4> Characters </a>";
