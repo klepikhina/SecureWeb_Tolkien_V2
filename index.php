@@ -38,10 +38,15 @@ if(icheck($s)) {
                         break;
                 case 2: 
                         echo "<table> <tr> <td> <b> <u> Characters </b> </u> </td> </tr> \n";
-                        $bid=htmlspecialchars($bid);
-                        $sid=htmlspecialchars($sid);
-                        $cid=htmlspecialchars($cid);
-                        $query = "SELECT a.characterid, c.name from appears a, characters c where c.characterid=a.characterid and a.bookid=$bid";
+                        $sid=mysqli_real_escape_string($db, $sid);
+                        $bid=mysqli_real_escape_string($db, $bid);
+                        $cid=mysqli_real_escape_string($db, $cid);
+                        if ($stmt = mysqli_prepare($db, "SELECT a.characterid, c.name from appears a, characters c where c.characterid=a.characterid and a.bookid=$bid")) {
+                               mysqli_stmt_bind_param($stmt, "s", $sid);
+                               mysqli_stmt_execute($stmt);
+                               mysqli_stmt_bind_result($stmt, $bid, $title);
+                               while(mysqli_stmt_fetch($stmt)) {
+                                       $bid=htmlspecialchars($bid); 
                         $result = mysqli_query($db, $query);
                         while($row=mysqli_fetch_row($result)) {
                                  echo "<tr> <td> <a href=index.php?cid=$row[0]&s=3> $row[1] </a> </td> </tr> \n";
@@ -85,9 +90,15 @@ echo "<table> <tr> <td> <b> <u> Characters </b> </u> </td> </tr> \n
                         if ($stmt = mysqli_prepare($db, "INSERT INTO characters set characterid='', name=?, race=?, side=?")) {
                                 mysqli_stmt_bind_param($stmt, "sss", $characterName, $characterRace, $characterSide);
                                 mysqli_stmt_execute($stmt);
+                                mysqli_stmt_close($stmt);
+                        } 
+                        if ($stmt = mysqli_prepare($db, "SELECT characterid from characters where name=? and race=? and side=? order by characterid desc limit 1")) {
+                                mysqli_stmt_bind_param($stmt, "sss", $characterName, $characterRace, $characterSide);
+                                mysqli_stmt_execute($stmt);
                                 mysqli_stmt_bind_result($stmt, $cid);
                                 while(mysqli_stmt_fetch($stmt)) {
-                                        $cid=$cid;                                }
+                                        $cid=$cid;
+                                }
                                 mysqli_stmt_close($stmt);
                         } else {
                                 echo "Error with query";
