@@ -32,4 +32,14 @@ function connect($db){
         }
         return $db;
 }
+
+function icheck($i) { //Check for numeric
+        if ($i != null) {
+                if (!is_numeric($i)) {
+                        print "<b> Error: </b> Invalid Syntax. ";
+                        exit;
+                }
+        }
+}
+
 ?>
