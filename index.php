@@ -6,6 +6,10 @@
 include_once('/var/www/html/hw6/hw6-lib.php');
 echo "<html> <head> <title> Tolkien </title> </head> <body>";
 $db=connect();
+icheck($s);
+icheck($sid);
+icheck($bid);
+icheck($cid);
 echo "<a href=index.php?s=4> Characters </a>";
 if(icheck($s)) {
         switch($s) {
